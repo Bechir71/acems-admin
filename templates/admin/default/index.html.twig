@@ -1,0 +1,31 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block left_sidebar %}
+
+{% include 'admin/common/left-sidebar.twig' with { active: 'homepage' } %}
+
+{% endblock %}
+
+{% block main %}
+<!-- OVERVIEW -->
+<div class="panel panel-headline">
+    <div class="panel-heading">
+        <h3 class="panel-title">Vue d'ensemble</h3>
+        <p class="panel-subtitle">Année acamdémique: 2018 - 2019</p>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-users"></i></span>
+                    <p>
+                        <span class="number">123</span>
+                        <span class="title">Membres</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

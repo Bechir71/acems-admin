@@ -1,0 +1,33 @@
+<!-- LEFT SIDEBAR -->
+<div id="sidebar-nav" class="sidebar">
+    <div class="sidebar-scroll">
+        <nav>
+            <ul class="nav">
+                <li><a href="{{ path('admin_index') }}" {% if active == 'homepage' %} class="active" {% endif %}>
+                    <i class="fa fa-home"></i> <span>Tableau de bord</span></a>
+                </li>
+                <li><a href="{{ path('admin_users') }}" {% if active == 'users' %} class="active" {% endif %}>
+                    <i class="fa fa-users"></i> <span>Membres</span></a>
+                </li>
+                <li>
+                    <a href="#" {% if active == 'activities' %} class="active" {% endif %}>
+                        <i class="fa fa-history"></i>
+                        <span>Activités
+                            <span class="badge mt-1">
+                                4{# {{ render(controller('App\\Controller\\Admin\\ActivityController::getActivitiesCount')) }} #}
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li><a href="#" {% if active == 'fund' %} class="active" {% endif %}>
+                    <i class="fa fa-houzz"></i> <span>Caisse</span></a>
+                </li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% include 'admin/common/super-admin-sidebar-addon.html.twig' with {active: active} %}
+                {% endif %}
+                <li><a href="{{ path('admin_settings') }}" {% if active == 'settings' %}class="active"{% endif %}><i class="fa fa-cog"></i> <span>Param&egrave;tres</span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- END LEFT SIDEBAR -->

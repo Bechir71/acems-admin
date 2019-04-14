@@ -4,13 +4,18 @@
 {% endblock %}
 
 {% block main %}
-<h3 class="page-title text-info"><span class="lnr lnr-users"></span> Utilisateurs <span class="badge badge-info mb-1">{{ users|length }}</span></h3></h3>
+<h3 class="page-title text-info">
+    <span class="lnr lnr-users"></span> Liste des membres de l'<strong>ACEMS</strong>
+    <span class="badge badge-info mb-2">{{ users|length }}</span>
+</h3>
 <div class="row">
     <div class="col-md-12">
         <!-- TABLE STRIPED -->
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title">Liste des utilisateurs</h3>
+                <h3 class="panel-title pb-2">
+                    <a href="#" class="float-right"><i class="fa fa-user-plus text-info"></i> <span class="text-info">Ajouter un membre</span></a>
+                </h3>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -18,36 +23,30 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nom d'utilisateur</th>
-                                <th>Date d'inscription</th>
-                                <th>Adresse email</th>
-                                {# <th>Langue</th> #}
-                                <th>Statut</th>
+                                <th>Nom complet</th>
+                                <th>Adresse</th>
+                                <th>Chambre</th>
+                                <th>UFR</th>
+                                <th>Niveau d'étude</th>
+                                <th>Poste</th>
+                                <th>Téléphone</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for user in users %}
                                 <tr>
+                                    <td>{{ loop.index }}</td>
                                     <td>
-                                        {{ loop.index }}</td>
-                                    <td>
-                                        <a href="{{ path('admin_user_show', {user: user.id}) }}">{{ user.username }}</a></td>
-                                    <td>
-                                        {{ user.submittedAt|date('d/m/Y') }}</td>
-                                    <td>
-                                        {{ user.email }}
+                                        <a href="{{ path('admin_user_show', {user: user.id}) }}">{{ user.username }}</a>
                                     </td>
-                                    {# <td>
-                                        {{ user.locale|upper }}
-                                    </td> #}
-                                    <td>
-                                        {% if user.enabled %}
-                                            <span class="label label-success">ACTIVÉ</span>
-                                        {% else %}
-                                            <span class="label label-warning">EN ATTENTE</span>
-                                        {% endif %}
-                                    </td>
+                                    {# Astel #}
+                                    <td>{{ user.address }}</td>
+                                    <td>{{ user.room }}</td>
+                                    <td>{{ user.ufr }}</td>
+                                    <td>{{ user.level }}</td>
+                                    <td>{{ user.post }}</td>
+                                    <td>{{ user.phone }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a class="edit-item" href="{{ path('admin_user_show', {user: user.id}) }}" data-toggle="tooltip" data-placement="top" title="Afficher le profil">

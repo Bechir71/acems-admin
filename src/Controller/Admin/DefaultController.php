@@ -94,7 +94,7 @@ class DefaultController extends AbstractController
      */
     public function settings(Request $request) : Response
     {
-        return $this->render('admin/pages/settings.html.twig');
+        return $this->render('admin/default/settings.html.twig');
     }
 
     /**
@@ -103,7 +103,7 @@ class DefaultController extends AbstractController
     public function show(Request $request, User $user) : Response
     {
         if (!$user) {
-            return $this->render('admin/pages/404.html.twig');
+            return $this->render('admin/default/404.html.twig');
         }
         return $this->render('admin/user/show.html.twig', [
             'user' => $user

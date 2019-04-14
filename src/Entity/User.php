@@ -41,9 +41,16 @@ class User extends BaseUser implements EquatableInterface
     private $address;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $room;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Post", cascade={"persist", "remove"})
      */
     private $post;
+
+    const NUM_ITEMS = 25;
 
     public function getId(): ?int
     {
@@ -160,5 +167,17 @@ class User extends BaseUser implements EquatableInterface
             return false;
         }
         return true;
+    }
+
+    public function getRoom(): ?int
+    {
+        return $this->room;
+    }
+
+    public function setRoom(?int $room): self
+    {
+        $this->room = $room;
+
+        return $this;
     }
 }

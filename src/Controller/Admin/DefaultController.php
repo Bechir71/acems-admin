@@ -98,7 +98,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/user/{user}", name="admin_user_show")
+     * @Route("/user/details/{user}", name="admin_user_show")
      */
     public function show(Request $request, User $user) : Response
     {

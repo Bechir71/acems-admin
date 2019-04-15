@@ -6,10 +6,31 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping\AttributeOverrides;
+use Doctrine\ORM\Mapping\AttributeOverride;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="app_user")
+ * 
+ * @AttributeOverrides({
+ *     @AttributeOverride(name="email",
+ *          column=@ORM\Column(
+ *              nullable = true
+ *          )
+ *      ),
+ *     @AttributeOverride(name="emailCanonical",
+ *          column=@ORM\Column(
+ *              name = "email_canonical",
+ *              nullable = true
+ *          )
+ *      ),
+ *     @AttributeOverride(name="password",
+ *          column=@ORM\Column(
+ *              nullable = true
+ *          )
+ *      )
+ * })
  */
 class User extends BaseUser implements EquatableInterface
 {
@@ -26,17 +47,17 @@ class User extends BaseUser implements EquatableInterface
     private $phone;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UFR")
+     * @ORM\ManyToOne(targetEntity="App\Entity\UFR", cascade={"persist", "remove"})
      */
     private $ufr;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Level")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Level", cascade={"persist", "remove"})
      */
     private $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
      */
     private $address;
 
@@ -49,6 +70,11 @@ class User extends BaseUser implements EquatableInterface
      * @ORM\OneToOne(targetEntity="App\Entity\Post", cascade={"persist", "remove"})
      */
     private $post;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $membershipFee;
 
     const NUM_ITEMS = 25;
 
@@ -177,6 +203,18 @@ class User extends BaseUser implements EquatableInterface
     public function setRoom(?int $room): self
     {
         $this->room = $room;
+
+        return $this;
+    }
+
+    public function getMembershipFee(): ?bool
+    {
+        return $this->membershipFee;
+    }
+
+    public function setMembershipFee(?bool $membershipFee): self
+    {
+        $this->membershipFee = $membershipFee;
 
         return $this;
     }

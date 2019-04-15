@@ -24,10 +24,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $address = $manager->getRepository(Address::class)->findAll()[0];
-        $level = $manager->getRepository(Level::class)->findAll()[0];
+        $address = $manager->getRepository(Address::class)->findAll()[15];
+        $level = $manager->getRepository(Level::class)->findAll()[3];
         $post = $manager->getRepository(Post::class)->findAll()[0];
-        $ufr = $manager->getRepository(UFR::class)->findAll()[0];
+        $ufr = $manager->getRepository(UFR::class)->findAll()[8];
 
         $user = new User();
         $user->setUsername('Admin')

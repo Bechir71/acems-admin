@@ -14,12 +14,12 @@
         <div class="panel">
             <div class="panel-heading">
                 <h3 class="panel-title pb-2">
-                    <a href="#" class="float-right"><i class="fa fa-user-plus text-info"></i> <span class="text-info">Ajouter un membre</span></a>
+                    <a href="{{ path('admin_add_user') }}" class="float-right"><i class="fa fa-user-plus text-info"></i> <span class="text-info">Ajouter un membre</span></a>
                 </h3>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -30,42 +30,52 @@
                                 <th>Niveau d'étude</th>
                                 <th>Poste</th>
                                 <th>Téléphone</th>
+                                <th>Cotisé</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for user in users %}
-                                <tr>
-                                    <td>{{ loop.index }}</td>
-                                    <td>
-                                        <a href="{{ path('admin_user_show', {user: user.id}) }}">{{ user.username }}</a>
-                                    </td>
-                                    {# Astel #}
-                                    <td>{{ user.address }}</td>
-                                    <td>{{ user.room }}</td>
-                                    <td>{{ user.ufr }}</td>
-                                    <td>{{ user.level }}</td>
-                                    <td>{{ user.post }}</td>
-                                    <td>{{ user.phone }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a class="edit-item" href="{{ path('admin_user_show', {user: user.id}) }}" data-toggle="tooltip" data-placement="top" title="Afficher le profil">
-                                                <i class="lnr lnr-eye fa-lg"></i>
-                                            </a>
-                                            &nbsp;&nbsp;
-                                            {% if not user.hasRole("ROLE_ADMIN") %}
-                                                <a class="delete-item" data-placement="top" data-target="#confirmDeleteModal" data-username="{{ user.username }}" data-user-id="{{ user.id }}" data-toggle="modal" style="cursor:pointer;" title="Supprimer {{ user.username }}">
-                                                    <i class="lnr lnr-trash text-danger"></i>
-                                                </a>
+                                {% if not (user.hasRole('ROLE_SUPER_ADMIN') or user.hasRole('ROLE_ADMIN')) %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>
+                                            <a href="{{ path('admin_user_show', {user: user.id}) }}">{{ user.username }}</a>
+                                        </td>
+                                        {# Astel #}
+                                        <td>{{ user.address }}</td>
+                                        <td>{{ user.room }}</td>
+                                        <td>{{ user.ufr }}</td>
+                                        <td>{{ user.level }}</td>
+                                        <td>{{ user.post }}</td>
+                                        <td>{{ user.phone }}</td>
+                                        <td>
+                                            {% if user.membershipFee %}
+                                                <i class="fa fa-check text-success"></i>
                                             {% else %}
-                                                Admin
+                                                <i class="fa fa-minus text-warning"></i>
                                             {% endif %}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% else %}
-                                    <p>Pas d'utilisateurs</p>
-                                {% endfor %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="edit-item" href="{{ path('admin_user_show', {user: user.id}) }}" data-toggle="tooltip" data-placement="top" title="Afficher le profil">
+                                                    <i class="lnr lnr-eye fa-lg"></i>
+                                                </a>
+                                                &nbsp;&nbsp;
+                                                {% if not user.hasRole("ROLE_ADMIN") %}
+                                                    <a class="delete-item" data-placement="top" data-target="#confirmDeleteModal" data-username="{{ user.username }}" data-user-id="{{ user.id }}" data-toggle="modal" style="cursor:pointer;" title="Supprimer {{ user.username }}">
+                                                        <i class="lnr lnr-trash text-danger"></i>
+                                                    </a>
+                                                {% else %}
+                                                    Admin
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% else %}
+                                <p>Pas d'utilisateurs</p>
+                            {% endfor %}
                         </tbody>
                         <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel">
                             <div class="modal-dialog" role="document">

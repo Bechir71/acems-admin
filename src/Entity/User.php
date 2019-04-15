@@ -14,6 +14,11 @@ use Doctrine\ORM\Mapping\AttributeOverride;
  * @ORM\Table(name="app_user")
  * 
  * @AttributeOverrides({
+ *     @AttributeOverride(name="usernameCanonical",
+ *          column=@ORM\Column(
+ *              unique = false
+ *          )
+ *      ),
  *     @AttributeOverride(name="email",
  *          column=@ORM\Column(
  *              nullable = true
@@ -47,17 +52,17 @@ class User extends BaseUser implements EquatableInterface
     private $phone;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UFR", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\UFR")
      */
     private $ufr;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Level", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Level")
      */
     private $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
      */
     private $address;
 
@@ -67,7 +72,7 @@ class User extends BaseUser implements EquatableInterface
     private $room;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Post", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Post")
      */
     private $post;
 

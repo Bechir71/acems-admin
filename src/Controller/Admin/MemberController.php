@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\UserType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Controller to manage member.
@@ -28,7 +29,10 @@ class MemberController extends AbstractController
     {
         $user = new User();
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user)
+            ->add('saveAndCreateNew', SubmitType::class, [
+                'label' => 'Valider et ajouter un nouveau membre'
+            ]);
 
         $form->handleRequest($request);
 
@@ -38,9 +42,15 @@ class MemberController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', "L'utilisateur a ete ajoute.");
-        }
+            $this->addFlash('success', "L'utilisateur a été ajouté.");
 
+            if($form->get('saveAndCreateNew')->isClicked()) {
+                return $this->redirectToRoute('admin_add_user');
+            } else {
+                return $this->redirectToRoute('admin_users');
+            }
+        }
+        
         return $this->render('admin/user/add.html.twig', [
             'form' => $form->createView()
         ]);

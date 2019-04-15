@@ -2,12 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use App\Entity\User;
+use App\Entity\UFR;
+use App\Entity\Post;
+use App\Entity\Level;
+use App\Entity\Address;
 
 class UserType extends AbstractType
 {
@@ -23,17 +29,29 @@ class UserType extends AbstractType
             ->add('room', IntegerType::class, [
                 'required' => false
             ])
-            ->add('ufr', UFRType::class, [
-                'required' => false
+            ->add('ufr', EntityType::class, [
+                'required' => false,
+                'class' => UFR::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Sélectionnez l\'UFR'
             ])
-            ->add('level', LevelType::class, [
-                'required' => false
+            ->add('level', EntityType::class, [
+                'required' => false,
+                'class' => Level::class,
+                'choice_label' => 'name',
+                'placeholder' => "Niveau d'étude"
             ])
-            ->add('address', AddressType::class, [
-                'required' => false
+            ->add('address', EntityType::class, [
+                'required' => false,
+                'class' => Address::class,
+                'choice_label' => 'name',
+                'placeholder' => "Adresse ou village"
             ])
-            ->add('post', PostType::class, [
-                'required' => false
+            ->add('post', EntityType::class, [
+                'required' => false,
+                'class' => Post::class,
+                'choice_label' => 'name',
+                'placeholder' => "Sélectionnez le poste"
             ])
         ;
     }

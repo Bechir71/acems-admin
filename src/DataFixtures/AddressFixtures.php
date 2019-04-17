@@ -15,7 +15,7 @@ class AddressFixtures extends Fixture
             'Village A', 'Village B', 'Village C', 'Village D', 'Village E',
             'Village F', 'Village G', 'Village H', 'Village I', 'Village J',
             'Village K', 'Village L', 'Village M', 'Village N', 'Village O',
-            'Sanar', 'Ngallel', 'Boudiouk', 'Ndar (Ville)',
+            'Sanar', 'Ngallel', 'Boudiouk', 'Ville',
         ];
 
         foreach ($names as $name) {

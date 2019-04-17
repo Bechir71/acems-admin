@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
+ * @ORM\Entity(readOnly=true)
  */
 class Address
 {

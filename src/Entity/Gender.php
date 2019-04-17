@@ -5,10 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LevelRepository")
- * @ORM\Entity(readOnly=true)
+ * @ORM\Entity(repositoryClass="App\Repository\GenderRepository")
  */
-class Level
+class Gender
 {
     /**
      * @ORM\Id()
@@ -20,27 +19,22 @@ class Level
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $value;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getValue(): ?string
     {
-        return $this->name;
+        return $this->value;
     }
 
-    public function setName(string $name): self
+    public function setValue(string $value): self
     {
-        $this->name = $name;
+        $this->value = $value;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 }

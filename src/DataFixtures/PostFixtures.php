@@ -20,6 +20,8 @@ class PostFixtures extends Fixture
             'Trésorier·e Général·e adjoint·e',
             'Commissaire au compte',
             'Commissaire au compte adjoint·e',
+            'Chargé·e de la sportive',
+            'Chargé·e de la sportive adjoint·e',
             'Chargé·e de la communication',
             'Chargé·e de la communication adjoint·e',
             'Chargé·e de la commission féminine',

@@ -67,7 +67,7 @@ class User extends BaseUser implements EquatableInterface
     private $address;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $room;
 
@@ -80,6 +80,11 @@ class User extends BaseUser implements EquatableInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $membershipFee;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Gender")
+     */
+    private $gender;
 
     const NUM_ITEMS = 25;
 
@@ -200,12 +205,12 @@ class User extends BaseUser implements EquatableInterface
         return true;
     }
 
-    public function getRoom(): ?int
+    public function getRoom(): ?string
     {
         return $this->room;
     }
 
-    public function setRoom(?int $room): self
+    public function setRoom(?string $room): self
     {
         $this->room = $room;
 
@@ -220,6 +225,18 @@ class User extends BaseUser implements EquatableInterface
     public function setMembershipFee(?bool $membershipFee): self
     {
         $this->membershipFee = $membershipFee;
+
+        return $this;
+    }
+
+    public function getGender(): ?Gender
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?Gender $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }

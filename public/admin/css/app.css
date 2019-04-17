@@ -279,3 +279,7 @@ legend {
 .input-group{
   display: inline-table;
 }
+
+.member-list td.post{
+  max-width: 244px;
+}

@@ -8,8 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Entity\Subscription;
 
 /**
  * Controller to manage default admin pages.
@@ -128,12 +126,11 @@ class DefaultController extends AbstractController
 
         $activeUsers = $qb->select('count(u.id)')
             ->from('App:User', 'u')
-            ->where($qb->expr()->eq('u.enabled', 'true'))
             ->getQuery()
             ->getSingleScalarResult();
 
         return [
-            'activeUsers'   => $activeUsers,
+            'nbUsers'   => $activeUsers - 1,
         ];
     }
 }

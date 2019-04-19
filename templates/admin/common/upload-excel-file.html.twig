@@ -1,0 +1,18 @@
+
+{{ form_start(form, {'attr': {'id': 'upload-form'}}) }}
+    <div class="form-group">
+        {{ form_errors(form) }}
+        <div class="input-container">
+            {{ form_widget(form.excel, {'attr': {'id': 'real-input', 'accept': '.csv, .xls, .xlsx'}}) }}
+            <button class="browse-btn">
+                <i class="lnr lnr-upload"></i>
+                Parcourir les fichiers
+            </button>
+            <span class="file-info">Uploader un fichier excel</span>
+        </div>
+    </div>
+    <button class="float-right btn btn-info btn-lg my-5 py-2" id="btn-upload-file" type="submit">
+        <i class="lnr lnr-checkmark-circle"></i>
+        Valider
+    </button>
+{{ form_end(form) }}

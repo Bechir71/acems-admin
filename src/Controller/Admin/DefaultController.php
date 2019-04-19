@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DefaultController extends AbstractController
 {
-
     /**
      * @Route("/", name="admin_index")
      */
@@ -54,58 +53,11 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * Profile page
-     *
-     * @Route("/profile", name="admin_profile")
-     */
-    public function profile(Request $request) : Response
-    {
-        return $this->show($request, $this->getUser());
-    }
-
-    /**
-     * @Route("/users", name="admin_users")
-     */
-    public function users(Request $request) : Response
-    {
-        $list = $this->getDoctrine()->getRepository(User::class)->getUsers(1);
-        return $this->render('admin/user/list.html.twig', [
-          'users' => $list,
-        ]);
-    }
-
-    /**
-     *  List users pagination
-     *
-     * @Route("/users/page/{page}", name="admin_users_paginated", requirements={"page"="\d+"})
-     */
-    public function usersPaginate(Request $request, $page) : Response
-    {
-        $list = $this->getDoctrine()->getRepository(User::class)->getUsers($page);
-        return $this->render('admin/user/list.html.twig', [
-          'users' => $list,
-        ]);
-    }
-
-    /**
      * @Route("/settings", name="admin_settings")
      */
     public function settings(Request $request) : Response
     {
         return $this->render('admin/default/settings.html.twig');
-    }
-
-    /**
-     * @Route("/user/details/{user}", name="admin_user_show")
-     */
-    public function show(Request $request, User $user) : Response
-    {
-        if (!$user) {
-            return $this->render('admin/default/404.html.twig');
-        }
-        return $this->render('admin/user/show.html.twig', [
-            'user' => $user
-        ]);
     }
 
     /**

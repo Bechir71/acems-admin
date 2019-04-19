@@ -8,14 +8,22 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping\AttributeOverrides;
 use Doctrine\ORM\Mapping\AttributeOverride;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="app_user")
  * 
  * @AttributeOverrides({
+ *     @AttributeOverride(name="username",
+ *          column=@ORM\Column(
+ *              nullable = true,
+ *              unique = false
+ *          )
+ *      ),
  *     @AttributeOverride(name="usernameCanonical",
  *          column=@ORM\Column(
+ *              nullable = true,
  *              unique = false
  *          )
  *      ),
@@ -27,7 +35,7 @@ use Doctrine\ORM\Mapping\AttributeOverride;
  *     @AttributeOverride(name="emailCanonical",
  *          column=@ORM\Column(
  *              name = "email_canonical",
- *              nullable = true
+ *              nullable = true,
  *          )
  *      ),
  *     @AttributeOverride(name="password",
@@ -36,6 +44,7 @@ use Doctrine\ORM\Mapping\AttributeOverride;
  *          )
  *      )
  * })
+ * @ORM\HasLifecycleCallbacks()
  */
 class User extends BaseUser implements EquatableInterface
 {
@@ -48,6 +57,7 @@ class User extends BaseUser implements EquatableInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $phone;
 
@@ -101,6 +111,9 @@ class User extends BaseUser implements EquatableInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        $this->setEmail('user' . substr(md5($phone), 0, 7). '@gmail.com');
+        $this->setUsername($phone);
 
         return $this;
     }
@@ -169,6 +182,9 @@ class User extends BaseUser implements EquatableInterface
             $this->level,
             $this->address,
             $this->post,
+            $this->room,
+            $this->gender,
+            $this->membershipFee
         ]);
     }
 
@@ -188,6 +204,9 @@ class User extends BaseUser implements EquatableInterface
             $this->level,
             $this->address,
             $this->post,
+            $this->room,
+            $this->gender,
+            $this->membershipFee
         ] = unserialize($serialized);
     }
 
@@ -239,5 +258,13 @@ class User extends BaseUser implements EquatableInterface
         $this->gender = $gender;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function defaultRoles()
+    {
+        $this->roles = ['ROLE_USER'];
     }
 }

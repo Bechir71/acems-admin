@@ -1,8 +1,60 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
-{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+<!-- WRAPPER -->
+<div id="wrapper">
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="auth-box" style="height: 600px">
+                <div class="left" style="width: 50%;">
+                    <div class="content">
+                        <div class="header">
+                            <div class="logo text-center"><img alt="{{ website.name }} Logo" src="{{ asset('admin/img/logo.jpg') }}" width="144"></div>
+                            <p class="lead">Inscrivez-vous sur {{ website.name }}</p>
+                        </div>
+                        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'form-auth-small'}}) }}
+                            {% if not form.vars.valid %}
+                                {% for children in form.children %}
+                                    {% if not children.vars.valid %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {% if children.first is defined %}
+                                                {{ form_errors(children.first) }}
+                                            {% else %}
+                                                {{ form_errors(children) }}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <div class="input-group my-3">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'placeholder': 'Numéro de téléphone'}}) }}
+                            </div>
+                            <div class="input-group my-3">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'form.password'}}) }}
+                            </div>
+                            <div class="input-group my-3">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'form.password_confirmation'}}) }}
+                            </div>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit"><i class="fa fa-user-plus"></i> INSCRIPTION</button>
+                            <div class="bottom">
+                                <a href="{{ path('fos_user_security_login') }}" class="btn-link">
+                                    <i class="fa fa-sign-in"></i>
+                                    Vous avez un compte ? Connectez-vous
+                                </a>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                <div class="right" style="width: 50%;">
+                    <div class="overlay"></div>
+                    <div class="content text">
+                        <h1 class="heading">{{ website.fullname }}</h1>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
     </div>
-{{ form_end(form) }}
+</div>
+<!-- END WRAPPER -->

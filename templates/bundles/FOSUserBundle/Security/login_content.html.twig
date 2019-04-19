@@ -3,32 +3,62 @@
 <div id="wrapper">
     <div class="vertical-align-wrap">
         <div class="vertical-align-middle">
-            <div class="auth-box lockscreen clearfix">
-                <div class="content">
-                    <h1 class="sr-only">{{ website.name }}</h1>
-                    <div class="user text-center">
-                        <img src="{{ asset('images/acems.jpg') }}" class="img-circle" width="400" alt="ACEMS Logo">
-                    </div>
-                    <form action="{{ path("fos_user_security_check") }}" method="POST">
-                        {% if error %}
-                            <p class="text-danger">Mot de passe invalide.</p>
-                        {% endif %}
-
-                        {% if csrf_token %}
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                        {% endif %}
-
-                        <input type="hidden" id="username" name="_username" value="{{ website.email }}" required="required"/>
-                        <div class="input-group">
-                            <input class="form-control" name="_password" placeholder="Entrez le mot de passe ..." type="password">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
-                            </span>
+            <div class="auth-box ">
+                <div class="left">
+                    <div class="content">
+                        <div class="header">
+                            <div class="logo text-center"><img alt="{{ website.name }} Logo" src="{{ asset('admin/img/logo.jpg') }}" width="144"></div>
+                            <p class="lead">Connectez-vous à votre compte</p>
                         </div>
-                    </form>
+                        <form class="form-auth-small" action="{{ path("fos_user_security_check") }}" method="POST">
+                            {% if error %}
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+									<i class="fa fa-times-circle"></i> {{ error.messageKey|trans(error.messageData, 'security') }}
+								</div>
+                            {% endif %}
+
+                            {% if csrf_token %}
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                            {% endif %}
+
+                            <div class="input-group">
+                                <label class="control-label sr-only" for="signin-email">Numéro de téléphone</label>
+								<span class="input-group-addon"><i class="fa fa-user"></i></span>
+								<input class="form-control" id="signin-email" name="_username" placeholder="Nom ou numéro de téléphone" type="text">
+							</div>
+                            <div class="input-group">
+                                <label class="control-label sr-only" for="signin-password">Mot de passe</label>
+								<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+								<input class="form-control" id="signin-password" name="_password" placeholder="Mot de passe" type="password">
+							</div>
+                            <div class="form-group clearfix mt-3">
+                                <label class="fancy-checkbox element-left">
+                                    <input name="_remember_me" type="checkbox">
+                                    <span>Rester connecté</span>
+                                </label>
+                                <span class="helper-text float-right">
+                                    <i class="fa fa-lock"></i>
+                                    <a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié?</a>
+                                </span>
+                            </div>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">CONNEXION</button>
+                            <div class="bottom">
+                                <a href="{{ path('fos_user_registration_register') }}" class="btn-link">
+                                    <i class="fa fa-user-plus"></i>
+                                    Créer un compte
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+                <div class="right">
+                    <div class="overlay"></div>
+                    <div class="content text">
+                        <h1 class="heading">{{ website.fullname }}</h1>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>

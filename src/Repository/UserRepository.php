@@ -22,10 +22,20 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function getUsers(int $page): Pagerfanta
+    public function loadUserByUsername($username)
+    {
+      return $this->createQueryBuilder('u')
+        ->where('u.phone = :query OR u.email = :query')
+        ->setParameter('query', $username)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+
+    public function getMembers(int $page): Pagerfanta
     {
         $qb = $this->createQueryBuilder('u')
-              ->orderBy('u.id', 'DESC');
+            ->andWhere("u.roles != 'ROLE_SUPER_ADMIN'")
+            ->orderBy('u.id', 'DESC');
 
         return $this->createPaginator($qb->getQuery(), $page);
     }

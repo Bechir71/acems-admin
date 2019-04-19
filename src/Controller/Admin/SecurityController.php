@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\User;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller that manage security part of the backend
@@ -53,6 +53,26 @@ class SecurityController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_index');
+    }
+
+    /**
+     * @Route("/remove-all", name="admin_users_empty")
+     */
+    public function removeUsers(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(User::class)->findAll();
+
+        foreach ($users as $user) {
+            if(!$user->hasRole('ROLE_SUPER_ADMIN')) {
+                $em->remove($user);
+            }
+        }
+        $em->flush();
+
+        $this->addFlash('success', 'Les utilisateurs ont été supprimés.');
+
+        return $this->redirectToRoute('admin_users');
     }
 
     private function setUserEnabled(Request $request, $enabled): JsonResponse

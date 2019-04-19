@@ -6,10 +6,12 @@
 parameters:
     locale: fr
     website:
-        name: "ACEMS Admin"
-        email: 'acems-admin@gmail.com'
-    website.name: 'ACEMS Admin'
-    website.email: 'acems-admin@gmail.com'
+        name: "ACEMS"
+        email: 'acems@gmail.com'
+        fullname: 'Amicale des Chercheurs et Étudiants Mauritaniens à Saint-Louis'
+    website.name: 'ACEMS'
+    website.email: 'acems@gmail.com'
+    excels_directory: '%kernel.project_dir%/public/admin/files'
 
 services:
     # default configuration for services in *this* file
@@ -33,6 +35,13 @@ services:
     # please note that last definitions always *replace* previous ones
 
     twig.extension.intl:
-            class: Twig_Extensions_Extension_Intl
-            tags:
-                - { name: twig.extension }
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    app.registration_completed:
+        class: App\EventListener\RegistrationCompletedListener
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }

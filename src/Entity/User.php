@@ -112,8 +112,13 @@ class User extends BaseUser implements EquatableInterface
     {
         $this->phone = $phone;
 
-        $this->setEmail('user' . substr(md5($phone), 0, 7). '@gmail.com');
-        $this->setUsername($phone);
+        if(empty($this->email)) {
+            $this->setEmail('user' . substr(md5($phone), 0, 7). '@gmail.com');
+        }
+
+        if(empty($this->username)) {
+            $this->setUsername($phone);
+        }
 
         return $this;
     }
@@ -236,7 +241,7 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    public function getMembershipFee(): ?bool
+    public function isMembershipFee(): ?bool
     {
         return $this->membershipFee;
     }

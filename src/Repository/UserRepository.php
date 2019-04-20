@@ -30,7 +30,7 @@ class UserRepository extends ServiceEntityRepository
         ->getQuery()
         ->getOneOrNullResult();
     }
-
+    
     public function getMembers(int $page): Pagerfanta
     {
         $qb = $this->createQueryBuilder('u')
@@ -38,6 +38,15 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id', 'DESC');
 
         return $this->createPaginator($qb->getQuery(), $page);
+    }
+
+    public function getAllMembers()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere("u.roles != 'ROLE_SUPER_ADMIN'")
+            ->orderBy('u.id', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**

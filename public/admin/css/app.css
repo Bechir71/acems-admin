@@ -325,3 +325,11 @@ input[type='file'] {
     margin: 10px 5px;
   }
 }
+
+.easy-pie-chart canvas {
+  top: -10px;
+  left: -10px;
+}
+.panel .right {
+  top: 15%;
+}

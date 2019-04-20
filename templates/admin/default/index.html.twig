@@ -28,4 +28,84 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-4">
+        <!-- REALTIME CHART -->
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="lnr lnr-pie-chart"></i> Cotisations</h3>
+                <div class="right">
+                    <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                    <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                </div>
+            </div>
+            <div class="panel-body">
+                {% set percent = ((data.membershipFeeCount * 100) / data.nbUsers)|round(2) %}
+                <div id="cotisations-chart" class="easy-pie-chart" data-percent="{{ percent }}">
+                    <span class="percent">{{ percent }}</span>
+                    <canvas height="130" width="130"></canvas>
+                </div>
+                <h4 class="text-center">Pourcentage des cotisations</h4>
+                <ul class="list-unstyled list-justify">
+                    <li>Cotisations: <span>{{ data.membershipFeeCount }}</span></li>
+                    <li>Total: <span>{{ data.nbUsers }}</span></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END REALTIME CHART -->
+    </div>
+    <div class="col-md-8">
+        <!-- TASKS -->
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="lnr lnr-apartment"></i> Pourcentage des étudiants dans chaque UFR</h3>
+                <div class="right">
+                    <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                    <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled task-list">
+                    {% set colors = ['success', 'warning', 'info', 'danger', 'default', 'success', 'warning', 'info'] %}
+                    {% set names = data.ufrStats|keys %}
+                    {% for ufr in data.ufrStats %}
+                    <li style="margin-bottom: 5px">
+                        <p>{{ names[loop.index - 1] }} <span class="label-percent">{{ ufr }}%</span></p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-{{ colors[loop.index - 1 ]}}" role="progressbar" aria-valuenow="{{ ufr }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ ufr }}%">
+                                <span class="sr-only">23% Complete</span>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- END TASKS -->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            var data, options;
+
+            // real-time pie chart
+            var cotisationsChars = $('#cotisations-chart').easyPieChart({
+                size: 130,
+                barColor: function(percent) {
+                    return "rgb(" + Math.round(200 * (1.1 - percent / 100)) + ", " + Math.round(200 * percent / 100) + ", 0)";
+                },
+                trackColor: 'rgba(245, 245, 245, 0.8)',
+                scaleColor: false,
+                lineWidth: 7,
+                lineCap: "square",
+                animate: 800
+            });
+
+        });
+    </script>
 {% endblock %}

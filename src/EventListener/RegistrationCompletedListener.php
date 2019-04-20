@@ -27,7 +27,7 @@ class RegistrationCompletedListener implements EventSubscriberInterface
         return array(
             FOSUserEvents::REGISTRATION_COMPLETED => 'completeProfil',
             FOSUserEvents::REGISTRATION_CONFIRMED => 'completeProfil',
-            FOSUserEvents::REGISTRATION_SUCCESS => 'addDefaultRoles',
+            FOSUserEvents::REGISTRATION_SUCCESS => 'completeProfil',
         );
     }
 

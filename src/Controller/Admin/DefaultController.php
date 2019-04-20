@@ -80,9 +80,36 @@ class DefaultController extends AbstractController
             ->from('App:User', 'u')
             ->getQuery()
             ->getSingleScalarResult();
+        
+        $students = $em->getRepository(User::class)->getAllMembers();
+        $ufrStats = [];
+        $membershipFeeCount = 0;
+
+        foreach($students as $student) {
+            $key = $student->getUfr() ? $student->getUfr()->getName() : 'Autre';
+
+            if(!array_key_exists($key, $ufrStats)) {
+                $ufrStats[$key] = 0;
+            }
+            $ufrStats[$key] += 1;
+
+            if($student->isMembershipFee()) {
+                $membershipFeeCount++;
+            }
+        }
+
+        $count = count($students);
+
+        foreach ($ufrStats as $name => $value) {
+            $ufrStats[$name] = round(($value * 100) / $count, 2);
+        }
+        
+        array_multisort($ufrStats, SORT_DESC);
 
         return [
             'nbUsers'   => $activeUsers - 1,
+            'ufrStats' => $ufrStats,
+            'membershipFeeCount' => $membershipFeeCount
         ];
     }
 }

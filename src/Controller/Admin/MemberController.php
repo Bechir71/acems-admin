@@ -61,7 +61,7 @@ class MemberController extends AbstractController
     public function completeProfile(Request $request): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user)->remove('post');
 
         $form->handleRequest($request);
 

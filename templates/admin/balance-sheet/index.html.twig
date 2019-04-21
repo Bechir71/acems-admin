@@ -1,12 +1,11 @@
 {% extends 'admin/base.html.twig' %}
 {% block left_sidebar %}
-    {% include 'admin/common/left-sidebar.twig' with { active: 'users' } %}
+    {% include 'admin/common/left-sidebar.twig' with { active: 'balance' } %}
 {% endblock %}
 
 {% block main %}
 <h3 class="page-title text-info">
-    <span class="lnr lnr-users"></span> Liste des membres de l'<strong>ACEMS</strong>
-    <span class="badge badge-info mb-2">{{ users|length - 1 }}</span>
+    <span class="lnr lnr-history"></span> Bilan de l'année 2018 - 2019
 </h3>
 <div class="row">
     <div class="col-md-12 px-2">
@@ -15,8 +14,8 @@
             <div class="panel-heading">
                 {% if is_granted('ROLE_ADMIN') %}
                 <h3 class="panel-title pb-2">
-                    <a href="#" data-toggle="modal" data-target="#loadExcelFileModal" class="float-left"><i class="fa fa-file-excel-o text-info"></i> <span class="text-info">Importer un fichier Excel</span></a>
-                    <a href="{{ path('admin_add_user') }}" class="float-right"><i class="fa fa-user-plus text-info"></i> <span class="text-info">Ajouter un membre</span></a>
+                    <a href="#" data-toggle="modal" data-target="#loadExcelFileModal" class="float-left"><i class="fa fa-file-excel-o text-info"></i> <span class="text-info">Importer un fichier Excel contenant le bilan</span></a>
+                    <a href="{{ path('admin_add_user') }}" class="float-right"><i class="fa fa-plus text-info"></i> <span class="text-info">Ajouter un mouvement</span></a>
                 </h3>
                 <hr>
                 {% endif %}
@@ -44,47 +43,30 @@
             <div class="panel-body px-2">
                 <div class="table-responsive">
                     <table class="table table-bordered member-list">
+                        {% for movement in movements %}
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nom complet</th>
-                                <th>Adresse</th>
-                                <th>Chambre</th>
-                                <th>UFR</th>
-                                <th>Niveau d'étude</th>
-                                <th>Téléphone</th>
-                                <th>Cotisé</th>
+                                <th>Title</th>
+                                <th>Montant</th>
+                                <th>Type</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for user in users %}
-                                {% if not (user.hasRole('ROLE_SUPER_ADMIN') or user.hasRole('ROLE_ADMIN')) %}
-                                    <tr>
-                                        <td>{{ loop.index }}</td>
-                                        <td>
-                                            <a href="{{ path('admin_user_show', {user: user.id}) }}">{{ user.username }}</a>
-                                            {% if user.isBruise %}
-                                                <span class="badge badge-info new-user">&nbsp;&nbsp;</span>
-                                            {% endif %}
-                                        </td>
-                                        {# Astel #}
-                                        <td>{{ user.address }}</td>
-                                        <td>{{ user.room }}</td>
-                                        <td>{{ user.ufr }}</td>
-                                        <td>{{ user.level }}</td>
-                                        <td>{{ user.phone }}</td>
-                                        <td>
-                                            {% if user.membershipFee %}
-                                                <i class="fa fa-check text-success"></i>
-                                            {% else %}
-                                                <i class="fa fa-minus text-warning"></i>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% else %}
-                                <p>Pas d'utilisateurs</p>
-                            {% endfor %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ movement.title }}</td>
+                                    <td>{{ user.amount }} FCFA</td>
+                                    <td>
+                                        {% if movement.type == movement.INPUT %}
+                                            <span class="label label-success">{{ movement.type|trans }}</span>
+                                        {% else %}
+                                            <span class="label label-warning">{{ movement.type|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ movement.createdAt|localizeddate('full', 'none', app.request.locale )|capitalize }}</td>
+                                </tr>
                         </tbody>
                         {% if is_granted('ROLE_ADMIN') %}
                         <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel">
@@ -111,41 +93,18 @@
                             </div>
                         </div>
                         {% endif %}
+
+                        {% else %}
+                            <p class="text-center">Pas de mouvements</p>
+                        {% endfor %}
                     </table>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div class="float-right py-3 mx-5">
-                            <a href="#" data-toggle="modal" data-target="#removeUsersModal" class="text-danger">
-                                <i class="lnr lnr-trash"></i> Supprimer tous les membres
-                            </a>
-                        </div>
-                        <div class="modal fade" id="removeUsersModal" tabindex="-1" role="dialog" aria-labelledby="removeUsersModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="removeUsersModalLabel">Confirmation</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p class="text-danger">Voulez-vous vraiment supprimer tous les membres de la base de données ?</p>
-                                        <p class="alert alert-danger"><span class="fa fa-warning"></span> Cette action est irréversible.</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default btn-lg float-left" data-dismiss="modal">Annuler</button>
-                                        <a href="{{ path('admin_users_empty') }}" class="btn btn-danger btn-lg">
-                                            <span class="lnr lnr-trash"></span> Tout supprimer
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
                 <div>
             </div>
             <div class="panel-footer">
                  <!-- Page navigation start -->
                   <nav aria-label="Page navigation">
                       <ul class="pagination">
-                      {% if users.haveToPaginate %}
+                      {#% if users.haveToPaginate %}
                           {{ pagerfanta(
                                     users,
                                     'twitter_bootstrap3_translated',
@@ -159,7 +118,7 @@
                           }}
                       {% else %}
                             <li><button type="button" class="btn btn-default disabled">1</button> </li>
-                      {% endif %}
+                      {% endif %#}
                       </ul>
                   </nav>
                   <!-- Page navigation end -->

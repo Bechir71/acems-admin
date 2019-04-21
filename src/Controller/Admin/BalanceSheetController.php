@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\BalanceSheet;
 
 /**
  * @Route("/balance-sheet")
@@ -11,12 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class BalanceSheetController extends AbstractController
 {
     /**
-     * @Route("/", name="balance_sheet")
+     * @Route("/", name="balance_sheet_index")
      */
     public function index()
     {
-        return $this->render('balance_sheet/index.html.twig', [
-            'controller_name' => 'BalanceSheetController',
+        $balanceSheet = $this->getDoctrine()->getRepository(BalanceSheet::class)->getCurrent();
+        return $this->render('admin/balance-sheet/index.html.twig', [
+            'balance' => $balanceSheet,
+            'movements' => $balanceSheet ? $balanceSheet->getMovements() : null
         ]);
     }
 }

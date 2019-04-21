@@ -1,2 +1,7 @@
 form:
   phone: Numéro de téléphone
+
+movement:
+  type:
+    input: Entrée
+    output: Sortie

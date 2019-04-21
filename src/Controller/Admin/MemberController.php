@@ -247,7 +247,7 @@ class MemberController extends AbstractController
             ->from('App:User', 'u')
             ->where("u.roles != 'ROLE_SUPER_ADMIN'")
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getSingleScalarResult() - 1
         );
     }
 

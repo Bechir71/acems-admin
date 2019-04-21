@@ -219,35 +219,41 @@ class MemberController extends AbstractController
                 }
             }
 
-            for($rowIt = 2; $rowIt <= $highestRow; $rowIt++) {
-                $data = $worksheet->rangeToArray(
-                    "A$rowIt:I$rowIt",  // The worksheet range that we want to retrieve
-                    NULL,               // Value that should be returned for empty cells
-                    TRUE,               // Should formulas be calculated (the equivalent of getCalculatedValue() for each cell)
-                    TRUE,               // Should values be formatted (the equivalent of getFormattedValue() for each cell)
-                    TRUE                // Should the array be indexed by cell row and cell column
-                )[$rowIt];
+            try {
+                for($rowIt = 2; $rowIt <= $highestRow; $rowIt++) {
+                    $data = $worksheet->rangeToArray(
+                        "A$rowIt:I$rowIt",  // The worksheet range that we want to retrieve
+                        NULL,               // Value that should be returned for empty cells
+                        TRUE,               // Should formulas be calculated (the equivalent of getCalculatedValue() for each cell)
+                        TRUE,               // Should values be formatted (the equivalent of getFormattedValue() for each cell)
+                        TRUE                // Should the array be indexed by cell row and cell column
+                    )[$rowIt];
 
-                $user = (new User())
-                    ->setUsername($data['A'])
-                    ->setAddress(null != $data['B'] ? $addresses[strtoupper($data['B'])] : null)
-                    ->setRoom($data['C'])
-                    ->setUfr(null != $data['D'] ? $ufrs[strtoupper($data['D'])] : null)
-                    ->setLevel(null != $data['E'] ? isset($levels[strtoupper($data['E'])]) ? $levels[strtoupper($data['E'])] : null : null)
-                    ->setPhone($data['F'])
-                    ->setMembershipFee(strtoupper($data['G']) == 'OUI')
-                    ->setBruise(strtoupper($data['H']) == 'OUI')
-                    ->setGender(null != $data['I'] ? $genders[strtoupper($data['I'])] : null)
-                ;
+                    $user = (new User())
+                        ->setUsername($data['A'])
+                        ->setAddress(null != $data['B'] ? $addresses[strtoupper($data['B'])] : null)
+                        ->setRoom($data['C'])
+                        ->setUfr(null != $data['D'] ? $ufrs[strtoupper($data['D'])] : null)
+                        ->setLevel(null != $data['E'] ? isset($levels[strtoupper($data['E'])]) ? $levels[strtoupper($data['E'])] : null : null)
+                        ->setPhone($data['F'])
+                        ->setMembershipFee(strtoupper($data['G']) == 'OUI')
+                        ->setBruise(strtoupper($data['H']) == 'OUI')
+                        ->setGender(null != $data['I'] ? $genders[strtoupper($data['I'])] : null)
+                    ;
 
-                if($user->isMembershipFee()) {
-                    $balanceSheet->plus(BalanceSheet::COTISATION);
+                    if($user->isMembershipFee()) {
+                        $balanceSheet->plus(BalanceSheet::COTISATION);
+                    }
+
+                    $em->persist($user);
+                    $em->persist($balanceSheet);
                 }
-
-                $em->persist($user);
-                $em->persist($balanceSheet);
+            } catch(\Exception $e) {
+                $this->addFlas('danger', 'Le fichier excel est invalide.');
+                return $this->redirectToRoute('admin_users');
+            } finally {
+                unlink($fileName);
             }
-
             $em->flush();
 
             $this->addFlash('success', "Le fichier a été importé.");

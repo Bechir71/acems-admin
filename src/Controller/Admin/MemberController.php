@@ -9,7 +9,8 @@ use App\Entity\ {
     Level,
     Address,
     UsersData,
-    Gender
+    Gender,
+    BalanceSheet
 };
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -187,6 +188,11 @@ class MemberController extends AbstractController
             $levels = [];
             $genders = [];
 
+            $balanceSheet = $em->getRepository(BalanceSheet::class)->getCurrent();
+            if(!$balanceSheet) {
+                $balanceSheet = new BalanceSheet;
+            }
+
             $objects = $em->getRepository(Address::class)->findAll();
             foreach($objects as $obj) {
                 $addresses[strtoupper($obj->getName())] = $obj;
@@ -234,7 +240,12 @@ class MemberController extends AbstractController
                     ->setGender(null != $data['I'] ? $genders[strtoupper($data['I'])] : null)
                 ;
 
+                if($user->isMembershipFee()) {
+                    $balanceSheet->plus(BalanceSheet::COTISATION);
+                }
+
                 $em->persist($user);
+                $em->persist($balanceSheet);
             }
 
             $em->flush();

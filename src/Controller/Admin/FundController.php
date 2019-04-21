@@ -28,7 +28,9 @@ class FundController extends AbstractController
         }
 
         return $this->render('admin/fund/index.html.twig', [
-            'balanceSheet' => $balanceSheet,
+            'fund' => $balanceSheet ? $balanceSheet->getFund() : 0,
+            'outputs' => $balanceSheet ? $balanceSheet->getOutputs() : 0,
+            'donations' => $balanceSheet ? $balanceSheet->getDonations() : 0,
         ]);
     }
 }

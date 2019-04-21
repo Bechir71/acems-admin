@@ -26,16 +26,30 @@ class BalanceSheet
     /**
      * @ORM\Column(type="integer")
      */
-    private $amount;
+    private $fund;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
+     */
+    private $donations;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $outputs;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $schoolYear;
 
+    const COTISATION = 3000;
+
     public function __construct()
     {
-        $this->amount = 0;
+        $this->fund = 0;
+        $this->outputs = 0;
+        $this->donations = 0;
         $this->movements = new ArrayCollection();
     }
 
@@ -57,7 +71,15 @@ class BalanceSheet
         if (!$this->movements->contains($movement)) {
             $this->movements[] = $movement;
             $movement->setBalanceSheet($this);
-            $this->plus($movement->getAmount());
+            
+            $amount = $movement->getAmount();
+
+            if($movement->getType() == Movement::INPUT) {
+                $this->plus($amount);
+                $this->donations += $amount;
+            } else {
+                $this->plus(-$amount);
+            }
         }
 
         return $this;
@@ -77,16 +99,9 @@ class BalanceSheet
         return $this;
     }
 
-    public function getAmount(): ?int
+    public function getFund(): ?int
     {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): self
-    {
-        $this->amount = $amount;
-
-        return $this;
+        return $this->fund;
     }
 
     public function getSchoolYear(): ?string
@@ -101,8 +116,22 @@ class BalanceSheet
         return $this;
     }
 
+    public function getDonations(): ?int
+    {
+        return $this->donations;
+    }
+
+    public function getOutputs(): ?int
+    {
+        return $this->outputs;
+    }
+
     public function plus($amount)
     {
-        $this->amount += $amount;
+        $this->fund += $amount;
+
+        if($amount < 0) {
+            $this->outputs -= $amount;
+        }
     }
 }

@@ -8,47 +8,49 @@
 
 {% block main %}
 <!-- OVERVIEW -->
-<div class="panel panel-headline">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-box-open"></i> Caisse</h3>
-        <p class="panel-subtitle">Année acamdémique: 2018 - 2019</p>
-    </div>
-    <div class="panel-body">
-        <div class="row fund">
-            <div class="col-md-3">
-                <div class="metric">
-                    <span class="icon"><i class="fa fa-box"></i></span>
-                    <p>
-                        <span class="number">195 000 FCFA</span>
-                        <span class="title">Cotisations</span>
-                    </p>
+<div class="row">
+    <div class="panel panel-headline">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-box-open"></i> Caisse</h3>
+            <p class="panel-subtitle">Année acamdémique: 2018 - 2019</p>
+        </div>
+        <div class="panel-body">
+            <div class="row fund">
+                <div class="col-md-3">
+                    <div class="metric">
+                        <span class="icon"><i class="fa fa-box"></i></span>
+                        <p>
+                            <span class="number">{{ (fund + outputs - donations)|price }} FCFA</span>
+                            <span class="title">Cotisations</span>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="metric">
-                    <span class="icon"><i class="fa fa-donate"></i></span>
-                    <p>
-                        <span class="number">135 000 FCFA</span>
-                        <span class="title">Dons</span>
-                    </p>
+                <div class="col-md-3">
+                    <div class="metric">
+                        <span class="icon"><i class="fa fa-donate"></i></span>
+                        <p>
+                            <span class="number">{{ donations|price }} FCFA</span>
+                            <span class="title">Dons</span>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="metric">
-                    <span class="icon"><i class="fa fa-minus"></i></span>
-                    <p>
-                        <span class="number">69 000 FCFA</span>
-                        <span class="title">Sorties (-)</span>
-                    </p>
+                <div class="col-md-3">
+                    <div class="metric">
+                        <span class="icon"><i class="fa fa-minus"></i></span>
+                        <p>
+                            <span class="number">{{ outputs|price }} FCFA</span>
+                            <span class="title">Sorties (-)</span>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="metric">
-                    <span class="icon"><i class="fa fa-equals"></i></span>
-                    <p>
-                        <span class="number">261 000 FCFA</span>
-                        <span class="title">Total restant</span>
-                    </p>
+                <div class="col-md-3">
+                    <div class="metric">
+                        <span class="icon"><i class="fa fa-equals"></i></span>
+                        <p>
+                            <span class="number">{{ fund|price }} FCFA</span>
+                            <span class="title">Total restant</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -6,16 +6,20 @@
                 <li><a href="{{ path('admin_index') }}" {% if active == 'homepage' %} class="active" {% endif %}>
                     <i class="fa fa-home"></i> <span>Tableau de bord</span></a>
                 </li>
-                <li><a href="{{ path('admin_users') }}" {% if active == 'users' %} class="active" {% endif %}>
-                    <i class="fa fa-users"></i> <span>Membres</span></a>
+                <li>
+                    <a href="{{ path('admin_users') }}" {% if active == 'users' %} class="active" {% endif %}>
+                        <i class="fa fa-users"></i>
+                        <span>Membres
+                            <span class="badge mt-1">
+                                {{ render(controller('App\\Controller\\Admin\\MemberController::membersCount')) }}
+                            </span>
+                        </span>
+                    </a>
                 </li>
                 <li>
                     <a href="#" {% if active == 'activities' %} class="active" {% endif %}>
                         <i class="fa fa-history"></i>
-                        <span>Activités
-                            <span class="badge mt-1">
-                                4{# {{ render(controller('App\\Controller\\Admin\\ActivityController::getActivitiesCount')) }} #}
-                            </span>
+                        <span>Bilan
                         </span>
                     </a>
                 </li>

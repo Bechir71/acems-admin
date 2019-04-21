@@ -239,4 +239,16 @@ class MemberController extends AbstractController
         return md5(uniqid());
     }
 
+    public function membersCount(): Response
+    {
+        return new Response(
+            $this->getDoctrine()->getManager()->createQueryBuilder()
+            ->select('COUNT(u.id)')
+            ->from('App:User', 'u')
+            ->where("u.roles != 'ROLE_SUPER_ADMIN'")
+            ->getQuery()
+            ->getSingleScalarResult()
+        );
+    }
+
 }

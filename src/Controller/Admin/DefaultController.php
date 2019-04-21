@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Gender;
 
 /**
  * Controller to manage default admin pages.
@@ -84,6 +85,9 @@ class DefaultController extends AbstractController
         $students = $em->getRepository(User::class)->getAllMembers();
         $ufrStats = [];
         $membershipFeeCount = 0;
+        $newUsers = 0;
+        $nbMales = 0;
+        $nbFemales = 0;
 
         foreach($students as $student) {
             $key = $student->getUfr() ? $student->getUfr()->getName() : 'Autre';
@@ -96,12 +100,22 @@ class DefaultController extends AbstractController
             if($student->isMembershipFee()) {
                 $membershipFeeCount++;
             }
+
+            if($student->isBruise()) {
+                $newUsers++;
+            }
+
+            if($student->getGender() && $student->getGender()->getValue() == Gender::FEMALE) {
+                $nbFemales++;
+            } 
         }
 
         $count = count($students);
+        $nbMales = round((($count - $nbFemales) * 100) / ($count ?: 1), 1);
+        $nbFemales = round(($nbFemales * 100) / ($count ?: 1), 1);
 
         foreach ($ufrStats as $name => $value) {
-            $ufrStats[$name] = round(($value * 100) / $count, 2);
+            $ufrStats[$name] = round(($value * 100) / ($count ?: 1), 2);
         }
         
         array_multisort($ufrStats, SORT_DESC);
@@ -109,7 +123,10 @@ class DefaultController extends AbstractController
         return [
             'nbUsers'   => $activeUsers - 1,
             'ufrStats' => $ufrStats,
-            'membershipFeeCount' => $membershipFeeCount
+            'membershipFeeCount' => $membershipFeeCount,
+            'newUsers' => $newUsers,
+            'males' => $nbMales,
+            'females' => $nbFemales
         ];
     }
 }

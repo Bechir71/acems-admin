@@ -21,6 +21,9 @@ class Gender
      */
     private $value;
 
+    const MALE = 'gender.male';
+    const FEMALE = 'gender.female';
+
     public function getId(): ?int
     {
         return $this->id;

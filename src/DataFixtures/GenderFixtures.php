@@ -11,7 +11,7 @@ class GenderFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $values = ['Masculin', 'Féminin'];
+        $values = [Gender::MALE, Gender::FEMALE];
 
         foreach ($values as $value) {
             $gender = new Gender();

@@ -15,12 +15,39 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-3">
                 <div class="metric">
                     <span class="icon"><i class="fa fa-users"></i></span>
                     <p>
                         <span class="number">{{ data['nbUsers'] }}</span>
                         <span class="title">Membres</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-user-plus"></i></span>
+                    <p>
+                        <span class="number">{{ data.newUsers }}</span>
+                        <span class="title">Bleus</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-male"></i>&nbsp;<i class="fa fa-male"></i></span>
+                    <p>
+                        <span class="number">{{ data.males }}%</span>
+                        <span class="title">Hommes</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric">
+                    <span class="icon"><i class="fa fa-female"></i>&nbsp;<i class="fa fa-female"></i></span>
+                    <p>
+                        <span class="number">{{ data.females }}%</span>
+                        <span class="title">Femmes</span>
                     </p>
                 </div>
             </div>
@@ -40,7 +67,11 @@
                 </div>
             </div>
             <div class="panel-body">
-                {% set percent = ((data.membershipFeeCount * 100) / data.nbUsers)|round(2) %}
+                {% set divider = data.nbUsers %}
+                {% if divider == 0 %}
+                    {% set divider = 1 %}
+                {% endif %}
+                {% set percent = ((data.membershipFeeCount * 100) / divider)|round(2) %}
                 <div id="cotisations-chart" class="easy-pie-chart" data-percent="{{ percent }}">
                     <span class="percent">{{ percent }}</span>
                     <canvas height="130" width="130"></canvas>
@@ -73,7 +104,7 @@
                         <p>{{ names[loop.index - 1] }} <span class="label-percent">{{ ufr }}%</span></p>
                         <div class="progress progress-xs">
                             <div class="progress-bar progress-bar-{{ colors[loop.index - 1 ]}}" role="progressbar" aria-valuenow="{{ ufr }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ ufr }}%">
-                                <span class="sr-only">23% Complete</span>
+                                <span class="sr-only">{{ ufr }}% Complete</span>
                             </div>
                         </div>
                     </li>

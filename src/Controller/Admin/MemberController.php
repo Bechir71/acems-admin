@@ -8,7 +8,8 @@ use App\Entity\ {
     User,
     Level,
     Address,
-    UsersData
+    UsersData,
+    Gender
 };
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -184,6 +185,7 @@ class MemberController extends AbstractController
             $ufrs = [];
             $addresses = [];
             $levels = [];
+            $genders = [];
 
             $objects = $em->getRepository(Address::class)->findAll();
             foreach($objects as $obj) {
@@ -200,9 +202,20 @@ class MemberController extends AbstractController
                 $levels[strtoupper($obj->getName())] = $obj;
             }
 
+            $objects = $em->getRepository(Gender::class)->findAll();
+            foreach($objects as $obj) {
+                $gender = $obj->getValue();
+
+                if($gender == Gender::FEMALE) {
+                    $genders['F'] = $obj;
+                } else {
+                    $genders['H'] = $obj;
+                }
+            }
+
             for($rowIt = 2; $rowIt <= $highestRow; $rowIt++) {
                 $data = $worksheet->rangeToArray(
-                    "A$rowIt:H$rowIt",  // The worksheet range that we want to retrieve
+                    "A$rowIt:I$rowIt",  // The worksheet range that we want to retrieve
                     NULL,               // Value that should be returned for empty cells
                     TRUE,               // Should formulas be calculated (the equivalent of getCalculatedValue() for each cell)
                     TRUE,               // Should values be formatted (the equivalent of getFormattedValue() for each cell)
@@ -218,6 +231,7 @@ class MemberController extends AbstractController
                     ->setPhone($data['F'])
                     ->setMembershipFee(strtoupper($data['G']) == 'OUI')
                     ->setBruise(strtoupper($data['H']) == 'OUI')
+                    ->setGender(null != $data['I'] ? $genders[strtoupper($data['I'])] : null)
                 ;
 
                 $em->persist($user);

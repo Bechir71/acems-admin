@@ -62,17 +62,17 @@ class User extends BaseUser implements EquatableInterface
     private $phone;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UFR")
+     * @ORM\ManyToOne(targetEntity="App\Entity\UFR", fetch="EAGER")
      */
     private $ufr;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Level")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Level", fetch="EAGER")
      */
     private $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address", fetch="EAGER")
      */
     private $address;
 
@@ -82,7 +82,7 @@ class User extends BaseUser implements EquatableInterface
     private $room;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Post")
+     * @ORM\OneToOne(targetEntity="App\Entity\Post", fetch="EAGER")
      */
     private $post;
 

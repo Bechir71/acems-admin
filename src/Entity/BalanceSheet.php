@@ -24,12 +24,18 @@ class BalanceSheet
     private $movements;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $amount;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $schoolYear;
 
     public function __construct()
     {
+        $this->amount = 0;
         $this->movements = new ArrayCollection();
     }
 
@@ -51,6 +57,7 @@ class BalanceSheet
         if (!$this->movements->contains($movement)) {
             $this->movements[] = $movement;
             $movement->setBalanceSheet($this);
+            $this->plus($movement->getAmount());
         }
 
         return $this;
@@ -60,11 +67,24 @@ class BalanceSheet
     {
         if ($this->movements->contains($movement)) {
             $this->movements->removeElement($movement);
+            $this->plus(-$movement->getAmount());
             // set the owning side to null (unless already changed)
             if ($movement->getBalanceSheet() === $this) {
                 $movement->setBalanceSheet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
 
         return $this;
     }
@@ -79,5 +99,10 @@ class BalanceSheet
         $this->schoolYear = $schoolYear;
 
         return $this;
+    }
+
+    public function plus($amount)
+    {
+        $this->amount += $amount;
     }
 }

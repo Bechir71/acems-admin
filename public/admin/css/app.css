@@ -334,9 +334,20 @@ input[type='file'] {
   top: 15%;
 }
 
-.badge.new-user {
-  margin-top: -2px;
-  font-size: 7px;
-  margin-left: 11px;
-  padding: 2px 5px;
+a.fund.active i:before,
+a.fund:hover i.fa-box:before {
+  content: "\f49e";
+}
+div.fund .metric .icon {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+div.fund .metric .icon i {
+  font-size: 17px;
+}
+
+div.fund .metric .number {
+  font-size: 21px;
+  font-weight: 400;
 }

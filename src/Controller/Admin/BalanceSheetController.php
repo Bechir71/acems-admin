@@ -4,15 +4,17 @@ namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\BalanceSheet;
 
 /**
  * @Route("/balance-sheet")
+ * @IsGranted("ROLE_ADMIN")
  */
 class BalanceSheetController extends AbstractController
 {
     /**
-     * @Route("/", name="balance_sheet_index")
+     * @Route("/", name="admin_balance_sheet_index")
      */
     public function index()
     {

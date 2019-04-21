@@ -96,6 +96,11 @@ class User extends BaseUser implements EquatableInterface
      */
     private $gender;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $bruise;
+
     const NUM_ITEMS = 25;
 
     public function getId(): ?int
@@ -271,5 +276,17 @@ class User extends BaseUser implements EquatableInterface
     public function defaultRoles()
     {
         $this->roles = ['ROLE_USER'];
+    }
+
+    public function isBruise(): ?bool
+    {
+        return $this->bruise;
+    }
+
+    public function setBruise(?bool $bruise): self
+    {
+        $this->bruise = $bruise;
+
+        return $this;
     }
 }

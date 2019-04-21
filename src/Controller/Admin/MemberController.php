@@ -202,7 +202,7 @@ class MemberController extends AbstractController
 
             for($rowIt = 2; $rowIt <= $highestRow; $rowIt++) {
                 $data = $worksheet->rangeToArray(
-                    "A$rowIt:G$rowIt",  // The worksheet range that we want to retrieve
+                    "A$rowIt:H$rowIt",  // The worksheet range that we want to retrieve
                     NULL,               // Value that should be returned for empty cells
                     TRUE,               // Should formulas be calculated (the equivalent of getCalculatedValue() for each cell)
                     TRUE,               // Should values be formatted (the equivalent of getFormattedValue() for each cell)
@@ -217,6 +217,7 @@ class MemberController extends AbstractController
                     ->setLevel(null != $data['E'] ? isset($levels[strtoupper($data['E'])]) ? $levels[strtoupper($data['E'])] : null : null)
                     ->setPhone($data['F'])
                     ->setMembershipFee(strtoupper($data['G']) == 'OUI')
+                    ->setBruise(strtoupper($data['H']) == 'OUI')
                 ;
 
                 $em->persist($user);

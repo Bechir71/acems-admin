@@ -351,3 +351,7 @@ div.fund .metric .number {
   font-size: 20px;
   font-weight: 400;
 }
+
+.profile-header .profile-stat.old{
+  background-color: #795548;
+}

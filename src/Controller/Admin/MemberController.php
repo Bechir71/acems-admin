@@ -239,6 +239,7 @@ class MemberController extends AbstractController
                         ->setMembershipFee(strtoupper($data['G']) == 'OUI')
                         ->setBruise(strtoupper($data['H']) == 'OUI')
                         ->setGender(null != $data['I'] ? $genders[strtoupper($data['I'])] : null)
+                        ->setEnabled(true)
                     ;
 
                     if($user->isMembershipFee()) {

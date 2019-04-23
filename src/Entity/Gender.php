@@ -23,6 +23,10 @@ class Gender
 
     const MALE = 'gender.male';
     const FEMALE = 'gender.female';
+    const GENDERS = [
+        self::MALE,
+        self::FEMALE
+    ];
 
     public function getId(): ?int
     {
@@ -39,5 +43,23 @@ class Gender
         $this->value = $value;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Twig getters
+     */
+    public function __call($name, $arguments)
+    {
+        $name = 'gender.' . strtolower($name);
+        
+        foreach (self::GENDERS as $gender) {
+            if($gender == $name)
+                return $gender;
+        }
     }
 }

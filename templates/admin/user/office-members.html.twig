@@ -21,10 +21,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nom complet</th>
-                                <th>Poste</th>
-                                <th>Adresse</th>
-                                <th>Téléphone</th>
+                                <th><i class="lnr lnr-user"></i>&nbsp;&nbsp;&nbsp;Nom complet</th>
+                                <th><i class="lnr lnr-briefcase"></i>&nbsp;&nbsp;&nbsp;Poste</th>
+                                <th><i class="lnr lnr-smartphone"></i>&nbsp;&nbsp;&nbsp;Téléphone</th>
+                                <th><i class="lnr lnr-map-marker"></i>&nbsp;&nbsp;&nbsp;Adresse</th>
                             </tr>
                         </thead>
                     {% endif %}
@@ -39,15 +39,8 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ user.post }}</td>
-                                        <td>{{ user.address }}</td>
                                         <td>{{ user.phone }}</td>
-                                        <td>
-                                            {% if user.membershipFee %}
-                                                <i class="fa fa-check text-success"></i>
-                                            {% else %}
-                                                <i class="fa fa-minus text-warning"></i>
-                                            {% endif %}
-                                        </td>
+                                        <td>{{ user.address }}</td>
                                     </tr>
                             {% else %}
                                 <p class="text-center">Aucun membre n'est dans le bureau.</p>

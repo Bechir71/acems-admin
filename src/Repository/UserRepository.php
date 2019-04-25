@@ -45,7 +45,11 @@ class UserRepository extends ServiceEntityRepository
         $qb =  $this->createQueryBuilder('u');
             $qb->andWhere("u.roles != 'ROLE_SUPER_ADMIN'")
             ->andWhere($qb->expr()->isNotNull('u.post'))
-            ->orderBy('u.id', 'DESC');
+            ->leftJoin('u.post', 'p')
+                ->addSelect('p')
+            ->leftJoin('u.address', 'a')
+                ->addSelect('a')
+            ->orderBy('p.id', 'ASC');
         
         return $qb->getQuery()->getResult();
     }

@@ -7,6 +7,14 @@
 <h3 class="page-title text-info">
     <span class="lnr lnr-users"></span> Liste des membres de l'<strong>ACEMS</strong>
     <span class="badge badge-info mb-2">{{ users|length - 1 }}</span>
+    <form class="float-right form-inline" method="GET" action="{{ path('admin_user_search') }}">
+        <div class="input-group">
+            <input class="form-control" type="search" name="username" placeholder="Tapez un nom">
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </h3>
 <div class="row">
     <div class="col-md-12 px-2">
@@ -143,27 +151,29 @@
                 <div>
             </div>
             <div class="panel-footer">
-                 <!-- Page navigation start -->
-                  <nav aria-label="Page navigation">
-                      <ul class="pagination">
-                      {% if users.haveToPaginate %}
-                          {{ pagerfanta(
-                                    users,
-                                    'twitter_bootstrap3_translated',
-                                    { routeName: 'admin_users_paginated',
-                                          routeParams: app.request.query.all,
-                                          prev_message: 'Précédant',
-                                          next_message: 'Suivant',
-                                          page_template: '<li><a href="%href%" %rel%>%text%</a></li>'
-                                    }
-                               )
-                          }}
-                      {% else %}
-                            <li><button type="button" class="btn btn-default disabled">1</button> </li>
-                      {% endif %}
-                      </ul>
-                  </nav>
-                  <!-- Page navigation end -->
+                {% if users.haveToPaginate is defined %}
+                    <!-- Page navigation start -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                        {% if users.haveToPaginate %}
+                            {{ pagerfanta(
+                                        users,
+                                        'twitter_bootstrap3_translated',
+                                        { routeName: 'admin_users_paginated',
+                                            routeParams: app.request.query.all,
+                                            prev_message: 'Précédant',
+                                            next_message: 'Suivant',
+                                            page_template: '<li><a href="%href%" %rel%>%text%</a></li>'
+                                        }
+                                )
+                            }}
+                        {% else %}
+                                <li><button type="button" class="btn btn-default disabled">1</button> </li>
+                        {% endif %}
+                        </ul>
+                    </nav>
+                    <!-- Page navigation end -->
+                {% endif %}
             </div>
         </div>
         <!-- END TABLE STRIPED -->

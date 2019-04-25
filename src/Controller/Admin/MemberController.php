@@ -70,6 +70,10 @@ class MemberController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            if($user->getPost() != null) {
+                $user->addRole('ROLE_ADMIN');
+            }
+
             $em->persist($user);
             $em->flush();
 
@@ -95,6 +99,10 @@ class MemberController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if($user->getPost() != null) {
+                $user->addRole('ROLE_ADMIN');
+            }
 
             $em->persist($user);
             $em->flush();
@@ -135,6 +143,17 @@ class MemberController extends AbstractController
     }
 
     /**
+     * @Route("/search", name="admin_user_search")
+     */
+    public function searchUser(Request $request) : Response
+    {
+        $list = $this->getDoctrine()->getRepository(User::class)->findByUsername($request->query->get('username'));
+        return $this->render('admin/user/list.html.twig', [
+          'users' => $list,
+        ]);
+    }
+
+    /**
      * @Route("/add", name="admin_add_user")
      * @IsGranted("ROLE_ADMIN")
      */
@@ -151,6 +170,10 @@ class MemberController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if($user->getPost() != null) {
+                $user->addRole('ROLE_ADMIN');
+            }
 
             $em->persist($user);
             $em->flush();
@@ -298,8 +321,10 @@ class MemberController extends AbstractController
      */
     public function officeMembers(Request $request): Response
     {
+        $users = $this->getDoctrine()->getRepository(User::class)->getOfficeMembers();
+
         return $this->render('admin/user/office-members.html.twig', [
-            'users' => $this->getDoctrine()->getRepository(User::class)->getOfficeMembers()
+            'users' => $users
         ]);
     }
 

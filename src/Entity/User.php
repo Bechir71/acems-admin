@@ -57,7 +57,6 @@ class User extends BaseUser implements EquatableInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $phone;
 

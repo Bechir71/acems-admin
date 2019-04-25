@@ -87,6 +87,9 @@ p {
 .font-15{
   font-size: 15px;
 }
+.font-16{
+  font-size: 16px;
+}
 .font-18{
   font-size: 18px;
 }
@@ -354,4 +357,8 @@ div.fund .metric .number {
 
 .profile-header .profile-stat.old{
   background-color: #795548;
+}
+
+hr.divider{
+  border-top: 2px solid #607d8b96;
 }

@@ -85,6 +85,32 @@ class MemberController extends AbstractController
     }
 
     /**
+     * @Route("/{user}/edit", name="admin_user_edit")
+     */
+    public function editUser(Request $request, User $user): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Le profil a été mis à jour.');
+            return $this->redirectToRoute('admin_user_show', [
+                'user' => $user->getId()
+            ]);
+        }
+
+        return $this->render('admin/user/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
      * @Route("/list", name="admin_users")
      */
     public function users(Request $request) : Response
@@ -263,6 +289,17 @@ class MemberController extends AbstractController
         
         return $this->render('admin/common/upload-excel-file.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/office", name="admin_office_members")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function officeMembers(Request $request): Response
+    {
+        return $this->render('admin/user/office-members.html.twig', [
+            'users' => $this->getDoctrine()->getRepository(User::class)->getOfficeMembers()
         ]);
     }
 

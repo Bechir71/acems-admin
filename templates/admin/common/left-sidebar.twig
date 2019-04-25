@@ -17,6 +17,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ path('admin_office_members') }}" {% if active == 'office_members' %} class="active" {% endif %}>
+                        <i class="fa fa-briefcase"></i>
+                        <span>Bureau
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ path('admin_balance_sheet_index') }}" {% if active == 'balance' %} class="active" {% endif %}>
                         <i class="fa fa-history"></i>
                         <span>Bilan
@@ -27,9 +34,6 @@
                     <li><a href="{{ path('admin_fund_index') }}" class="fund{% if active == 'fund' %} active{% endif %}">
                         <i class="fa fa-box"></i> <span>Caisse</span></a>
                     </li>
-                {% endif %}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    {% include 'admin/common/super-admin-sidebar-addon.html.twig' with {active: active} %}
                 {% endif %}
                 <li><a href="{{ path('admin_settings') }}" {% if active == 'settings' %}class="active"{% endif %}><i class="fa fa-cog"></i> <span>Param&egrave;tres</span></a></li>
             </ul>

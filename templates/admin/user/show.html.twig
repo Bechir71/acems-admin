@@ -48,15 +48,20 @@
           <div class="profile-info">
             <ul class="list-unstyled list-justify">
               <hr>
-              <li><i class="fa fa-whatsapp"></i> Whatsapp <span>{{ user.phone ? : '—' }}</span></li>
+              <li class="font-16"><i class="lnr lnr-smartphone fa-lg"></i> Numéro de téléphone <span>{{ user.phone ? : '—' }}</span></li>
+              <li class="font-16"><i class="lnr lnr-map-marker fa-lg"></i> Adresse <span>{{ user.room ~ ' ' ~ user.address }}</span></li>
+              <li class="font-16"><i class="lnr lnr-apartment fa-lg"></i> UFR <span>{{ user.ufr ? : 'Inconnue' }}</span></li>
+              <li class="font-16"><i class="lnr lnr-graduation-hat fa-lg"></i> Niveau d'étude <span>{{ user.level ? : 'Inconnue' }}</span></li>
+              <li class="font-16"><i class="lnr lnr-briefcase fa-lg"></i> Poste <span>{{ user.post ? : 'Aucun' }}</span></li>
               {# <li>Site web <span><a href="#">www.un-site.com</a></span></li> #}
             </ul>
           </div>
           <div class="profile-info">
-            <h4 class="heading">Actions sur le compte</h4>
+            <h4 class="heading"><hr class="divider"></h4>
             <div class="text-center">
               {% if not user.hasRole('ROLE_ADMIN') %}
                 <div class="btn-group">
+                    <a href="{{ path('admin_user_edit', {user: user.id}) }}" class="btn btn-default m-1 px-4 my-3"><span class="lnr lnr-pencil"></span> Modifier le profil</a>
                     <a href="#" class="btn btn-warning m-1 px-4 my-3 {% if not user.enabled %}hidden{% endif %}" id="disable-user"><span class="lnr lnr-circle-minus"></span> Désactiver</a>
                     <a href="#" class="btn btn-info m-1 px-4 my-3 {% if user.enabled %}hidden{% endif %}" id="enable-user"><span class="lnr lnr-checkmark-circle"></span> Activer</a>
                     <a href="#" class="btn btn-danger mx-1 px-4 my-3" data-toggle="modal" data-target="#confirmDeleteModal"><span class="lnr lnr-trash"></span> Supprimer</a>

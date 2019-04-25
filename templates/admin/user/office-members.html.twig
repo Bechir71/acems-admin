@@ -1,66 +1,35 @@
 {% extends 'admin/base.html.twig' %}
 {% block left_sidebar %}
-    {% include 'admin/common/left-sidebar.twig' with { active: 'users' } %}
+    {% include 'admin/common/left-sidebar.twig' with { active: 'office_members' } %}
 {% endblock %}
 
 {% block main %}
 <h3 class="page-title text-info">
-    <span class="lnr lnr-users"></span> Liste des membres de l'<strong>ACEMS</strong>
-    <span class="badge badge-info mb-2">{{ users|length - 1 }}</span>
+    <span class="lnr lnr-briefcase"></span> Membres du bureau
+    <span class="badge badge-info mb-2">{{ users|length }}</span>
 </h3>
 <div class="row">
     <div class="col-md-12 px-2">
         <!-- TABLE STRIPED -->
         <div class="panel">
             <div class="panel-heading">
-                {% if is_granted('ROLE_ADMIN') %}
-                <h3 class="panel-title pb-2">
-                    <a href="#" data-toggle="modal" data-target="#loadExcelFileModal" class="float-left"><i class="fa fa-file-excel text-info"></i> <span class="text-info">Importer un fichier Excel</span></a>
-                    <a href="{{ path('admin_add_user') }}" class="float-right"><i class="fa fa-user-plus text-info"></i> <span class="text-info">Ajouter un membre</span></a>
-                </h3>
-                <hr>
-                {% endif %}
             </div>
-
-            {% if is_granted('ROLE_ADMIN') %}
-            <div class="modal fade" id="loadExcelFileModal" role="dialog" aria-labelledby="loadExcelFileModalLabel">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="loadExcelFileModalLabel"><i class="fa fa-file-import text-info"></i> <span class="text-info">Importer un fichier Excel</span></h4>
-                        </div>
-                        <div class="modal-body">
-                            {{ render(controller('App\\Controller\\Admin\\MemberController::load')) }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-lg float-left" data-dismiss="modal">Annuler</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
             <div class="panel-body px-2">
                 <div class="table-responsive">
                     <table class="table table-bordered member-list">
-                        {% if users is not empty %}
+                    {% if users is not empty %}
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Nom complet</th>
+                                <th>Poste</th>
                                 <th>Adresse</th>
-                                <th>Chambre</th>
-                                <th>UFR</th>
-                                <th>Niveau d'étude</th>
                                 <th>Téléphone</th>
-                                <th>Cotisé</th>
                             </tr>
                         </thead>
-                        {% endif %}
+                    {% endif %}
                         <tbody>
                             {% for user in users %}
-                                {% if not (user.hasRole('ROLE_SUPER_ADMIN') or user.hasRole('ROLE_ADMIN')) %}
                                     <tr>
                                         <td>{{ loop.index }}</td>
                                         <td>
@@ -69,10 +38,8 @@
                                                 <i class="fa fa-circle text-primary font-12"></i>
                                             {% endif %}
                                         </td>
+                                        <td>{{ user.post }}</td>
                                         <td>{{ user.address }}</td>
-                                        <td>{{ user.room }}</td>
-                                        <td>{{ user.ufr }}</td>
-                                        <td>{{ user.level }}</td>
                                         <td>{{ user.phone }}</td>
                                         <td>
                                             {% if user.membershipFee %}
@@ -82,9 +49,8 @@
                                             {% endif %}
                                         </td>
                                     </tr>
-                                {% endif %}
                             {% else %}
-                                <p class="text-center">Pas d'utilisateurs</p>
+                                <p class="text-center">Aucun membre n'est dans le bureau.</p>
                             {% endfor %}
                         </tbody>
                         {% if users is not empty and is_granted('ROLE_ADMIN') %}
@@ -113,7 +79,7 @@
                         </div>
                         {% endif %}
                     </table>
-                    {% if users is not empty and is_granted('ROLE_ADMIN') %}
+                        {% if users is not empty and is_granted('ROLE_ADMIN') %}
                         <div class="float-right py-3 mx-5">
                             <a href="#" data-toggle="modal" data-target="#removeUsersModal" class="text-danger">
                                 <i class="lnr lnr-trash"></i> Supprimer tous les membres
@@ -141,29 +107,6 @@
                         </div>
                     {% endif %}
                 <div>
-            </div>
-            <div class="panel-footer">
-                 <!-- Page navigation start -->
-                  <nav aria-label="Page navigation">
-                      <ul class="pagination">
-                      {% if users.haveToPaginate %}
-                          {{ pagerfanta(
-                                    users,
-                                    'twitter_bootstrap3_translated',
-                                    { routeName: 'admin_users_paginated',
-                                          routeParams: app.request.query.all,
-                                          prev_message: 'Précédant',
-                                          next_message: 'Suivant',
-                                          page_template: '<li><a href="%href%" %rel%>%text%</a></li>'
-                                    }
-                               )
-                          }}
-                      {% else %}
-                            <li><button type="button" class="btn btn-default disabled">1</button> </li>
-                      {% endif %}
-                      </ul>
-                  </nav>
-                  <!-- Page navigation end -->
             </div>
         </div>
         <!-- END TABLE STRIPED -->

@@ -35,7 +35,16 @@ class UserRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('u')
             ->andWhere("u.roles != 'ROLE_SUPER_ADMIN'")
-            ->orderBy('u.id', 'DESC');
+            ->leftJoin('u.address', 'a')
+                ->addSelect('a')
+            ->leftJoin('u.ufr', 'uf')
+                ->addSelect('uf')
+            ->leftJoin('u.level', 'l')
+                ->addSelect('l')
+            
+            ->addOrderBy('u.membershipFee', 'DESC')
+            ->addOrderBy('u.phone', 'ASC')
+            ->addOrderBy('u.id', 'DESC');
 
         return $this->createPaginator($qb->getQuery(), $page);
     }

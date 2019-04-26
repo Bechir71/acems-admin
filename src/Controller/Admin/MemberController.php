@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -86,6 +87,26 @@ class MemberController extends AbstractController
         return $this->render('admin/user/complete.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/config", name="admin_user_config")
+     */
+    public function userConfig(Request $request): JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->find(User::class, $request->request->get('id'));
+        $phoneNumberVisiblity = $request->request->get('hide-number');
+
+        if ($user) {
+            $user->setNumberPrivate($phoneNumberVisiblity);
+
+            $em->flush();
+
+            return new JsonResponse($phoneNumberVisiblity);
+        }
+        
+        return new JsonResponse(null);
     }
 
     /**

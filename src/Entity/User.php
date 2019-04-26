@@ -100,7 +100,18 @@ class User extends BaseUser implements EquatableInterface
      */
     private $bruise;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isNumberPrivate;
+    
+
     const NUM_ITEMS = 25;
+
+    public function __construct()
+    {
+        $this->isNumberPrivate = true;
+    }
 
     public function getId(): ?int
     {
@@ -285,6 +296,18 @@ class User extends BaseUser implements EquatableInterface
     public function setBruise(?bool $bruise): self
     {
         $this->bruise = $bruise;
+
+        return $this;
+    }
+
+    public function isNumberPrivate(): ?bool
+    {
+        return $this->isNumberPrivate;
+    }
+
+    public function setNumberPrivate(bool $value): self
+    {
+        $this->isNumberPrivate = $value;
 
         return $this;
     }

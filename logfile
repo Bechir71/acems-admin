@@ -5,3 +5,18 @@
 2019-04-24 10:11:07.064 GMT [3147] LOG:  database system is ready to accept connections
 2019-04-24 10:11:55.507 GMT [3194] FATAL:  database "acems" does not exist
 2019-04-24 12:07:43.503 GMT [3152] LOG:  using stale statistics instead of current ones because stats collector is not responding
+2001-01-01 00:17:01.712 GMT [921] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2001-01-01 00:17:01.732 GMT [921] LOG:  listening on IPv6 address "::1", port 5432
+2001-01-01 00:17:01.812 GMT [921] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2001-01-01 00:17:01.887 GMT [922] LOG:  database system was shut down at 2001-01-01 00:16:08 GMT
+2001-01-01 00:17:01.899 GMT [921] LOG:  database system is ready to accept connections
+2001-01-01 00:17:11.497 GMT [921] LOG:  received fast shutdown request
+2001-01-01 00:17:11.529 GMT [921] LOG:  aborting any active transactions
+2001-01-01 00:17:11.570 GMT [921] LOG:  background worker "logical replication launcher" (PID 928) exited with exit code 1
+2001-01-01 00:17:11.570 GMT [923] LOG:  shutting down
+2001-01-01 00:17:11.689 GMT [921] LOG:  database system is shut down
+2001-01-01 00:17:56.773 GMT [990] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2001-01-01 00:17:56.806 GMT [990] LOG:  listening on IPv6 address "::1", port 5432
+2001-01-01 00:17:56.832 GMT [990] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2001-01-01 00:17:56.965 GMT [991] LOG:  database system was shut down at 2001-01-01 00:17:11 GMT
+2001-01-01 00:17:57.106 GMT [990] LOG:  database system is ready to accept connections

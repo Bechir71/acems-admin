@@ -10,7 +10,7 @@
   <div class="panel panel-profile">
     <div class="clearfix">
       <!-- LEFT COLUMN -->
-      <div class="col-md-6 package profile-left">
+      <div class="col-md-12 package profile-left">
         <!-- PROFILE HEADER -->
         <div class="profile-header">
           <div class="overlay {% if user.enabled %}bg-success-2{% else %}bg-warning-2{% endif %}"></div>
@@ -59,17 +59,14 @@
           <div class="profile-info">
             <h4 class="heading"><hr class="divider"></h4>
             <div class="text-center">
-              {% if not user.hasRole('ROLE_ADMIN') %}
                 <div class="btn-group">
                     <a href="{{ path('admin_user_edit', {user: user.id}) }}" class="btn btn-default m-1 px-4 my-3"><span class="lnr lnr-pencil"></span> Modifier le profil</a>
-                    <a href="#" class="btn btn-warning m-1 px-4 my-3 {% if not user.enabled %}hidden{% endif %}" id="disable-user"><span class="lnr lnr-circle-minus"></span> Désactiver</a>
-                    <a href="#" class="btn btn-info m-1 px-4 my-3 {% if user.enabled %}hidden{% endif %}" id="enable-user"><span class="lnr lnr-checkmark-circle"></span> Activer</a>
-                    <a href="#" class="btn btn-danger mx-1 px-4 my-3" data-toggle="modal" data-target="#confirmDeleteModal"><span class="lnr lnr-trash"></span> Supprimer</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                      <a href="#" class="btn btn-warning m-1 px-4 my-3 {% if not user.enabled %}hidden{% endif %}" id="disable-user"><span class="lnr lnr-circle-minus"></span> Désactiver</a>
+                      <a href="#" class="btn btn-info m-1 px-4 my-3 {% if user.enabled %}hidden{% endif %}" id="enable-user"><span class="lnr lnr-checkmark-circle"></span> Activer</a>
+                      <a href="#" class="btn btn-danger mx-1 px-4 my-3" data-toggle="modal" data-target="#confirmDeleteModal"><span class="lnr lnr-trash"></span> Supprimer</a>
+                    {% endif %}
                 </div>
-              {% endif %}
-              {% if app.user == user %}
-                <a href="{{ path('fos_user_profile_edit') }}" target="_blank" class="btn btn-default btn-block my-3"><span class="lnr lnr-pencil"></span> Modifier mon profil</a>
-              {% endif %}
             </div>
           </div>
           {% if not user.hasRole('ROLE_ADMIN') %}
@@ -101,6 +98,15 @@
         <!-- END PROFILE DETAIL -->
       </div>
       <!-- END LEFT COLUMN -->
+      <!-- RIGHT COLUMN -->
+      <div class="col-md-6 package profile-right">
+          {% if user == app.user %}
+            <h3>Confidentialités</h3>
+            <input type="checkbox" id="hide-number" name="config[number]" {% if user.isNumberPrivate %}checked{% endif %}>
+            <label for="hide-number">&nbsp;&nbsp; Masquer mon numéro</label>
+          {% endif %}
+      </div>
+      <!-- END RIGHT COLUMN -->
     </div>
   </div>
 {% endblock %}
@@ -134,6 +140,25 @@
       e.preventDefault();
     });
 
+    $("#hide-number").on('click', function(e){
+      button = $(this)
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "{{ path('admin_user_config') }}",
+        data: "id=" + {{ user.id }} + "&hide-number=" + button.is(":checked"),
+
+        success: function(data) {
+          console.log(data)
+        },
+
+        error: function(data) {
+          console.error(data)
+          alert('Une erruer est survenue au niveau du serveur.')
+        }
+      })  
+    })
+
     // Enable user when we click on the enable user button
     $("#enable-user").on('click', function(e){
       button = $(this)
@@ -144,7 +169,6 @@
         data: "id=" + {{ user.id }},
 
         success: function(data) {
-          console.log('user enabled')
           button.addClass('hidden')
           $("#disable-user").removeClass('hidden')
           $('.overlay').removeClass('bg-warning-2').addClass('bg-success-2')

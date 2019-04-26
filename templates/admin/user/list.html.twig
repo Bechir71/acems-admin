@@ -62,15 +62,17 @@
                                 <th>UFR</th>
                                 <th>Niveau d'étude</th>
                                 <th>Téléphone</th>
-                                <th>Cotisé</th>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <th>Cotisé</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         {% endif %}
                         <tbody>
                             {% for user in users %}
-                                {% if not (user.hasRole('ROLE_SUPER_ADMIN') or user.hasRole('ROLE_ADMIN')) %}
+                                {% if not user.hasRole('ROLE_SUPER_ADMIN') %}
                                     <tr>
-                                        <td>{{ loop.index }}</td>
+                                        <td>{{ (loop.index - 1) }}</td>
                                         <td>
                                             <a href="{{ path('admin_user_show', {user: user.id}) }}">{{ user.username }}</a>
                                             {% if user.isBruise %}
@@ -81,14 +83,26 @@
                                         <td>{{ user.room }}</td>
                                         <td>{{ user.ufr }}</td>
                                         <td>{{ user.level }}</td>
-                                        <td>{{ user.phone }}</td>
                                         <td>
-                                            {% if user.membershipFee %}
-                                                <i class="fa fa-check text-success"></i>
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                {{ user.phone }}
                                             {% else %}
-                                                <i class="fa fa-minus text-warning"></i>
+                                                {% if user.isNumberPrivate and app.user != user %}
+                                                    * * * * * *
+                                                {% else %}
+                                                    {{ user.phone }}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <td>
+                                                {% if user.membershipFee %}
+                                                    <i class="fa fa-check text-success"></i>
+                                                {% else %}
+                                                    <i class="fa fa-minus text-warning"></i>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endif %}
                             {% else %}

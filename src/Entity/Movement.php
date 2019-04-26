@@ -45,7 +45,7 @@ class Movement
     const INPUT = 'movement.type.input';
     const OUTPUT = 'movement.type.output';
     const TYPES = [
-        slef::INPUT,
+        self::INPUT,
         self::OUTPUT
     ];
 

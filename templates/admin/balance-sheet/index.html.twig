@@ -42,7 +42,7 @@
 
             <div class="panel-body px-2">
                 <div class="table-responsive">
-                    <table class="table table-bordered member-list">
+                    {# <table class="table table-bordered member-list">
                         {% for movement in movements %}
                         <thead>
                             <tr>
@@ -97,7 +97,65 @@
                         {% else %}
                             <p class="text-center">Pas de mouvements</p>
                         {% endfor %}
-                    </table>
+                    </table> #}
+                    <table class="table table-bordered member-list">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Montant</th>
+                                    <th>Type</th>
+                                    <td>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="warnin">
+                                    <td>1</td>
+                                    <td>
+                                        <a href="#"></a>
+                                    </td>
+                                    <td>33 000 FCFA</td>
+                                    <td><span class="label label-warning"> Sortie</td>
+                                    <td>Lundi 21 Avril</td>
+                                </tr>
+                                <tr class="warnin">
+                                    <td>2</td>
+                                    <td>
+                                        <a href="#">Don</a>
+                                    </td>
+                                    <td>13 000 FCFA</td>
+                                    <td><span class="label label-warning"> Sortie</td>
+                                    <td>Mercredi 13 Mars</td>
+                                </tr>
+                                <tr class="warnin">
+                                    <td>3</td>
+                                    <td>
+                                        <a href="#"></a>
+                                    </td>
+                                    <td>33 000 FCFA</td>
+                                    <td><span class="label label-warning"> Sortie</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="success">
+                                    <td>4</td>
+                                    <td>
+                                        <a href="#">Don</a>
+                                    </td>
+                                    <td>15 000 FCFA</td>
+                                    <td><span class="label label-success"> Entrée</td>
+                                    <td>Dimanche 24 Mars</td>
+                                </tr>
+                                <tr class="success">
+                                    <td>5</td>
+                                    <td>
+                                        <a href="#">Bilan année 2017 - 2018</a>
+                                    </td>
+                                    <td>25 500 FCFA</td>
+                                    <td><span class="label label-success"> Entrée</td>
+                                    <td>Mardi 12 Mars</td>
+                                </tr>
+                            </tbody>
+                        </table>
                 <div>
             </div>
             <div class="panel-footer">
